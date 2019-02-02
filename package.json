@@ -1,0 +1,18 @@
+{
+  "name": "item-bot",
+  "version": "1.0.0",
+  "description": "Working hard for a Peruman ban",
+  "main": "bot.js",
+  "author": "SpaceWarf",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "discord.js-commando": "^0.9.0",
+    "discord.js": "^11.4.2",
+    "dotenv": "^6.2.0"
+  },
+  "engines": {
+    "node": "8.10.0"
+  }
+}
