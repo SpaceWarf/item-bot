@@ -27,6 +27,6 @@ client.on('message', message => {
     if (message.content.startsWith(prefix)) {
         db.createPlayer(message.author.username);
     }
-});
+})
 
 client.login(process.env.TOKEN);

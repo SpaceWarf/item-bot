@@ -13,13 +13,13 @@ module.exports = class Buy extends commando.Command {
 
     async run(message) {
         db.getInventory(message.author.username).then(inventory => {
-            let msg = 'Here is your inventory:';
             if (inventory.length === 0) {
                 message.say('Your inventory is empty.');
                 return;
             };
+            let msg = '**Here is your inventory**';
             inventory.forEach(item => {
-                msg += `\n(${item.quantity}) ${item.name} - ${item.sellPrice}`;
+                msg += `\n  • (${item.quantity}) ${item.name} - ${item.sellPrice}`;
             });
             message.say(msg);
         });

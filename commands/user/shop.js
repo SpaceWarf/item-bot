@@ -1,20 +1,20 @@
 const commando = require('discord.js-commando');
 const { items } = require('./config/items.config');
 
-module.exports = class List extends commando.Command {
+module.exports = class Shop extends commando.Command {
     constructor(client) {
         super(client, {
-            name: 'list',
+            name: 'shop',
             group: 'user',
-            memberName: 'list',
+            memberName: 'shop',
             description: 'List all items available for purchase.'
         });
     }
 
     async run(message) {
-        let msg = "";
+        let msg = '**Here\'s what I got for sale**';
         items.forEach(item => {
-            msg += `${item.name} - ${item.buyPrice} coins\n`
+            msg += `\n  • ${item.name} - ${item.buyPrice} coins`
         });
         message.say(msg);
     }
