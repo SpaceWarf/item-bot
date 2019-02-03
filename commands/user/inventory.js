@@ -19,7 +19,7 @@ module.exports = class Buy extends commando.Command {
                 return;
             };
             inventory.forEach(item => {
-                msg += `\n${item.name} - ${item.sellPrice}`;
+                msg += `\n(${item.quantity}) ${item.name} - ${item.sellPrice}`;
             });
             message.say(msg);
         });

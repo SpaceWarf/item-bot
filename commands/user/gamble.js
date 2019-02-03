@@ -1,7 +1,7 @@
 const commando = require('discord.js-commando');
 const db = require('../../db/db');
 const { odds, multipliers } = require('./config/odds.config');
-const { random } = require('./utilities/random');
+const { random } = require('../../utilities/random');
 
 module.exports = class Gamble extends commando.Command {
     constructor(client) {

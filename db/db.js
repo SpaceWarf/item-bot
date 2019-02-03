@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const PlayerModel = require('./models/player')
+const { find, remove } = require('../utilities/lists');
 
 class Database {
     constructor() {
@@ -51,11 +52,19 @@ class Database {
         });
     }
 
-    addItems(name, items) {
+    addItems(name, itemsToAdd) {
         this.getInventory(name).then(inventory => {
+            itemsToAdd.forEach(itemToAdd => {
+                const itemInInventory = find(itemToAdd.name, inventory);
+                if (itemInInventory) {
+                    itemInInventory.quantity += 1;
+                } else {
+                    itemToAdd.quantity = 1;
+                    inventory.push(itemToAdd);
+                }
+            });
             this.updateInventory(name, [
-                ...inventory,
-                ...items
+                ...inventory
             ]);
         });
     }
@@ -64,8 +73,12 @@ class Database {
         this.getInventory(name).then(inventory => {
             let filteredInventory = inventory;
             itemsToRemove.forEach(itemToRemove => {
-                filteredInventory = filteredInventory
-                    .filter(item => itemToRemove.name !== item.name);
+                const inventoryItem = find(itemToRemove.name, filteredInventory);
+                if (inventoryItem.quantity === 1) {
+                    filteredInventory = remove(itemToRemove.name, filteredInventory);
+                } else {
+                    inventoryItem.quantity -= 1;
+                }
             });
             this.updateInventory(name, filteredInventory);
         });

@@ -1,7 +1,7 @@
 const commando = require('discord.js-commando');
 const db = require('../../db/db');
 const { items } = require('./config/items.config');
-const { findInList } = require('./utilities/find');
+const { find } = require('../../utilities/lists');
 
 module.exports = class Buy extends commando.Command {
     constructor(client) {
@@ -23,7 +23,7 @@ module.exports = class Buy extends commando.Command {
     async run(message, { item }) {
         const username = message.author.username;
         db.getCoins(username).then(coins => {
-            const itemData = findInList(item, items);
+            const itemData = find(item, items);
             if (itemData) {
                 if (itemData.buyPrice > coins) {
                     message.say(`This item costs ${itemData.buyPrice} and you only have ${coins}. What the hell are you trying to do?`);
