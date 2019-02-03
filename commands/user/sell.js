@@ -1,5 +1,6 @@
 const commando = require('discord.js-commando');
-const { items } = require('./config/items.config');
+const db = require('../../db/db');
+const { findInList } = require('./utilities/find');
 
 module.exports = class Sell extends commando.Command {
     constructor(client) {
@@ -18,17 +19,17 @@ module.exports = class Sell extends commando.Command {
         });
     }
 
-    getItemData(item) {
-        return items.find(itemData => itemData.name === item);
-    }
-
     async run(message, { item }) {
-        const itemData = this.getItemData(item);
-
-        if (itemData) {
-            message.say(`You just sold ${itemData.name} for ${itemData.sellPrice}.`);
-        } else {
-            message.say('You do not have this item.');
-        }
+        const username = message.author.username;
+        db.getInventory(username).then(inventory => {
+            const itemToSell = findInList(item, inventory);
+            if (itemToSell) {
+                message.say(`I\'ll buy this off of you for ${itemToSell.sellPrice}. Pleasure doing business with you.`);
+                db.addCoins(username, itemToSell.sellPrice);
+                db.removeItem(username, [itemToSell]);
+            } else {
+                message.say('You don\'t even have this item.');
+            }
+        });
     }
 }
